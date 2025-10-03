@@ -1,0 +1,35 @@
+{
+   "type": "module",
+  // Visit https://aka.ms/tsconfig to read more about this file
+  
+  "compilerOptions": {
+    // Paths
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    // Modern Node + TS
+    "target": "ES2022",              // Compatible y estable
+    "module": "NodeNext",            // Soporta import/export modernos
+    "moduleResolution": "NodeNext",  // Para que resuelva bien los .ts/.js
+    "esModuleInterop": true,         // Permite importar librerías comunes sin problema
+
+    // Node types
+    "lib": ["ES2022"],
+    "types": ["node"],
+
+    // Extras de compilación
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    // Seguridad de tipos
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    // Limpieza
+    "skipLibCheck": true
+  }
+
+
+}
