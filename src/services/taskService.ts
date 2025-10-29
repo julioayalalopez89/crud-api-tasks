@@ -1,32 +1,45 @@
-import { Task } from "../models/task";
+import { PrismaClient } from "../generated/prisma";
+const prisma = new PrismaClient();
 
-let tasks: Task[] =  [
-  { id: 1, title: "Aprender Node.js", completed: false },
-  { id: 2, title: "Hacer CRUD con TypeScript", completed: true }
-];
-let idCounter = 1;
-
-export const getAllTasks = (): Task[] => tasks;
-
-export const getTaskById = (id: number): Task | undefined =>
-  tasks.find((t) => t.id === id);
-
-export const createTask = (title: string): Task => {
-  const newTask: Task = { id: idCounter++, title, completed: false };
-  tasks.push(newTask);
-  return newTask;
+export const getAllTasks = async () => {
+  return await prisma.task.findMany();
 };
 
-export const updateTask = (id: number, data: Partial<Task>): Task | null => {
-  const task = tasks.find((t) => t.id === id);
-  if (!task) return null;
-  Object.assign(task, data);
-  return task;
+export const getTaskById = async (id: number) => {
+  return await prisma.task.findUnique({ where: { id } });
 };
 
-export const deleteTask = (id: number): boolean => {
-  const index = tasks.findIndex((t) => t.id === id);
-  if (index === -1) return false;
-  tasks.splice(index, 1);
+export const createTask = async (title: string) => {
+  return await prisma.task.create({ data: { title } });
+};
+
+export const updateTask = async (id: number, data: { title?: string; done?: boolean }) => {
+  return await prisma.task.update({
+    where: { id },
+    data,
+  });
+};
+
+export const deleteTask = async (id: number) => {
+  await prisma.task.delete({ where: { id } });
   return true;
 };
+
+
+export async function createSampleTasks() {
+  // Verifica si ya existen tasks
+  const count = await prisma.task.count();
+  if (count > 0) return; // Si hay datos, no hacer nada
+
+  // Crear tasks de prueba
+  await prisma.task.createMany({
+    data: [
+       { title: "Aprender TypeScript" },
+       { title: "Configurar Prisma" },
+       { title: "Crear API CRUD" },
+       { title: "Probar Swagger" },
+    ],
+  });
+
+  console.log("✅ Tasks de prueba creadas");
+}

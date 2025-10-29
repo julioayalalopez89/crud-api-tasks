@@ -4,6 +4,9 @@ import cors from "cors";
 import taskRoutes from "./routes/taskRoutes";
 import errorHandler from "./middlewares/errorHandler";
 
+
+
+
 ///////////////SWAGGER///////////////////////
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
@@ -71,7 +74,5 @@ app.use("/tasks", taskRoutes);
 app.use(errorHandler);
 
 export default app;
-
-
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
